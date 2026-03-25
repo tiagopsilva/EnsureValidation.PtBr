@@ -24,7 +24,7 @@
   <ItemGroup>
     <Using Include="Xunit" />
     <Using Include="EnsureValidation" />
-    <Using Include="EnsureValidation.PtBr" />
+    <Using Include="EnsureValidation.PtBR" />
   </ItemGroup>
 
 </Project>

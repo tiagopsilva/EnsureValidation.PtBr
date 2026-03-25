@@ -7,15 +7,10 @@ public class StringValidatorExtensionsTests
     [InlineData("52998222060")]      // Another valid CPF
     public void Cpf_WithValidCpf_PassesValidation(string cpf)
     {
-        // Arrange
         var entity = new TestEntity { Cpf = cpf };
-        var context = new EnsureContext();
+        entity.Validate();
 
-        // Act
-        entity.Validate(context);
-
-        // Assert
-        Assert.Empty(context.Notifications);
+        Assert.Empty(entity.Notifications);
     }
 
     [Theory]
@@ -28,25 +23,18 @@ public class StringValidatorExtensionsTests
     [InlineData(null)]               // Null (should pass as per documentation)
     public void Cpf_WithInvalidOrEmptyCpf_FailsValidation(string? cpf)
     {
-        // Arrange
         var entity = new TestEntity { Cpf = cpf };
-        var context = new EnsureContext();
+        entity.Validate();
 
-        // Act
-        entity.Validate(context);
-
-        // Assert
         if (string.IsNullOrEmpty(cpf))
         {
-            // Empty or null values should pass validation
-            Assert.Empty(context.Notifications);
+            Assert.Empty(entity.Notifications);
         }
         else
         {
-            // Invalid CPF should fail
-            Assert.NotEmpty(context.Notifications);
-            Assert.Single(context.Notifications);
-            Assert.Contains("CPF", context.Notifications[0].Message, StringComparison.OrdinalIgnoreCase);
+            Assert.NotEmpty(entity.Notifications);
+            Assert.Single(entity.Notifications);
+            Assert.Contains("CPF", entity.Notifications[0].Message, StringComparison.OrdinalIgnoreCase);
         }
     }
 
@@ -55,15 +43,10 @@ public class StringValidatorExtensionsTests
     [InlineData("34028316000152")]   // Another valid CNPJ
     public void Cnpj_WithValidCnpj_PassesValidation(string cnpj)
     {
-        // Arrange
         var entity = new TestEntity { Cnpj = cnpj };
-        var context = new EnsureContext();
+        entity.Validate();
 
-        // Act
-        entity.Validate(context);
-
-        // Assert
-        Assert.Empty(context.Notifications);
+        Assert.Empty(entity.Notifications);
     }
 
     [Theory]
@@ -76,46 +59,33 @@ public class StringValidatorExtensionsTests
     [InlineData(null)]               // Null (should pass as per documentation)
     public void Cnpj_WithInvalidOrEmptyCnpj_FailsValidation(string? cnpj)
     {
-        // Arrange
         var entity = new TestEntity { Cnpj = cnpj };
-        var context = new EnsureContext();
+        entity.Validate();
 
-        // Act
-        entity.Validate(context);
-
-        // Assert
         if (string.IsNullOrEmpty(cnpj))
         {
-            // Empty or null values should pass validation
-            Assert.Empty(context.Notifications);
+            Assert.Empty(entity.Notifications);
         }
         else
         {
-            // Invalid CNPJ should fail
-            Assert.NotEmpty(context.Notifications);
-            Assert.Single(context.Notifications);
-            Assert.Contains("CNPJ", context.Notifications[0].Message, StringComparison.OrdinalIgnoreCase);
+            Assert.NotEmpty(entity.Notifications);
+            Assert.Single(entity.Notifications);
+            Assert.Contains("CNPJ", entity.Notifications[0].Message, StringComparison.OrdinalIgnoreCase);
         }
     }
 
     [Fact]
     public void Cpf_WithPortugueseMessages_UsesPortugueseMessage()
     {
-        // Arrange
         PtBRMessages.Configure();
         var entity = new TestEntity { Cpf = "invalid" };
-        var context = new EnsureContext();
+        entity.Validate();
 
-        // Act
-        entity.Validate(context);
-
-        // Assert
-        Assert.NotEmpty(context.Notifications);
-        Assert.Contains("CPF", context.Notifications[0].Message, StringComparison.OrdinalIgnoreCase);
-        // Check that message contains Portuguese words
+        Assert.NotEmpty(entity.Notifications);
+        Assert.Contains("CPF", entity.Notifications[0].Message, StringComparison.OrdinalIgnoreCase);
         Assert.True(
-            context.Notifications[0].Message.Contains("válido", StringComparison.OrdinalIgnoreCase) ||
-            context.Notifications[0].Message.Contains("inválido", StringComparison.OrdinalIgnoreCase),
+            entity.Notifications[0].Message.Contains("válido", StringComparison.OrdinalIgnoreCase) ||
+            entity.Notifications[0].Message.Contains("inválido", StringComparison.OrdinalIgnoreCase),
             "Message should be in Portuguese"
         );
     }
@@ -123,21 +93,15 @@ public class StringValidatorExtensionsTests
     [Fact]
     public void Cnpj_WithPortugueseMessages_UsesPortugueseMessage()
     {
-        // Arrange
         PtBRMessages.Configure();
         var entity = new TestEntity { Cnpj = "invalid" };
-        var context = new EnsureContext();
+        entity.Validate();
 
-        // Act
-        entity.Validate(context);
-
-        // Assert
-        Assert.NotEmpty(context.Notifications);
-        Assert.Contains("CNPJ", context.Notifications[0].Message, StringComparison.OrdinalIgnoreCase);
-        // Check that message contains Portuguese words
+        Assert.NotEmpty(entity.Notifications);
+        Assert.Contains("CNPJ", entity.Notifications[0].Message, StringComparison.OrdinalIgnoreCase);
         Assert.True(
-            context.Notifications[0].Message.Contains("válido", StringComparison.OrdinalIgnoreCase) ||
-            context.Notifications[0].Message.Contains("inválido", StringComparison.OrdinalIgnoreCase),
+            entity.Notifications[0].Message.Contains("válido", StringComparison.OrdinalIgnoreCase) ||
+            entity.Notifications[0].Message.Contains("inválido", StringComparison.OrdinalIgnoreCase),
             "Message should be in Portuguese"
         );
     }
@@ -145,52 +109,39 @@ public class StringValidatorExtensionsTests
     [Fact]
     public void CpfAndCnpj_BothValidated_AllValidationsPass()
     {
-        // Arrange
         var entity = new TestEntity
         {
             Cpf = "11144477735",      // Valid CPF
             Cnpj = "11222333000181"   // Valid CNPJ
         };
-        var context = new EnsureContext();
+        entity.Validate();
 
-        // Act
-        entity.Validate(context);
-
-        // Assert
-        Assert.Empty(context.Notifications);
+        Assert.Empty(entity.Notifications);
     }
 
     [Fact]
     public void CpfAndCnpj_BothInvalid_BothValidationsFail()
     {
-        // Arrange
         var entity = new TestEntity
         {
             Cpf = "invalid",          // Invalid CPF
             Cnpj = "invalid"          // Invalid CNPJ
         };
-        var context = new EnsureContext();
+        entity.Validate();
 
-        // Act
-        entity.Validate(context);
-
-        // Assert
-        Assert.Equal(2, context.Notifications.Count);
+        Assert.Equal(2, entity.Notifications.Count);
     }
 
     // Test helper class
-    private class TestEntity : Notifiable
+    private class TestEntity : Notifiable<TestEntity>
     {
         public string? Cpf { get; set; }
         public string? Cnpj { get; set; }
 
-        public void Validate(EnsureContext context)
+        protected override void OnValidate()
         {
-            new StringValidator(Cpf, nameof(Cpf), context)
-                .Cpf();
-
-            new StringValidator(Cnpj, nameof(Cnpj), context)
-                .Cnpj();
+            Ensure.That(Cpf, nameof(Cpf)).Cpf();
+            Ensure.That(Cnpj, nameof(Cnpj)).Cnpj();
         }
     }
 }
