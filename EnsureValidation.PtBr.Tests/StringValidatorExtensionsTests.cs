@@ -4,7 +4,7 @@ public class StringValidatorExtensionsTests
 {
     [Theory]
     [InlineData("11144477735")]      // Valid CPF
-    [InlineData("52998222060")]      // Another valid CPF
+    [InlineData("52998222005")]      // Another valid CPF
     public void Cpf_WithValidCpf_PassesValidation(string cpf)
     {
         var entity = new TestEntity { Cpf = cpf };
@@ -40,7 +40,7 @@ public class StringValidatorExtensionsTests
 
     [Theory]
     [InlineData("11222333000181")]   // Valid CNPJ
-    [InlineData("34028316000152")]   // Another valid CNPJ
+    [InlineData("34028316000103")]   // Another valid CNPJ
     public void Cnpj_WithValidCnpj_PassesValidation(string cnpj)
     {
         var entity = new TestEntity { Cnpj = cnpj };
