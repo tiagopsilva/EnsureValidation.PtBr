@@ -1,7 +1,7 @@
 # EnsureValidation.PtBR
 
 [![NuGet](https://img.shields.io/nuget/v/EnsureValidation.PtBR.svg)](https://www.nuget.org/packages/EnsureValidation.PtBR)
-[![CI](https://github.com/tiagosilva/EnsureValidation/actions/workflows/ci.yml/badge.svg)](https://github.com/tiagosilva/EnsureValidation/actions/workflows/ci.yml)
+[![CI](https://github.com/tiagopsilva/EnsureValidation/actions/workflows/ci.yml/badge.svg)](https://github.com/tiagopsilva/EnsureValidation/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Extensão do `EnsureValidation` com suporte a **mensagens em Português (pt-BR)** e **validadores de documentos brasileiros** (CPF e CNPJ).
@@ -178,7 +178,7 @@ dotnet test /p:CollectCoverage=true /p:CoverageFormat=opencover
 
 ## Suporte
 
-Para reportar bugs, sugerir melhorias ou fazer perguntas, abra uma [issue no GitHub](https://github.com/tiagosilva/EnsureValidation/issues).
+Para reportar bugs, sugerir melhorias ou fazer perguntas, abra uma [issue no GitHub](https://github.com/tiagopsilva/EnsureValidation/issues).
 
 ## Licença
 
