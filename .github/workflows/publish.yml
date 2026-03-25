@@ -1,0 +1,41 @@
+name: Publish to NuGet
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version (e.g. 1.0.0)'
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      run: |
+        dotnet restore EnsureValidation.PtBr/EnsureValidation.PtBR.csproj
+        dotnet restore EnsureValidation.PtBr.Tests/EnsureValidation.PtBr.Tests.csproj
+
+    - name: Build
+      run: |
+        dotnet build EnsureValidation.PtBr/EnsureValidation.PtBR.csproj --no-restore --configuration Release
+        dotnet build EnsureValidation.PtBr.Tests/EnsureValidation.PtBr.Tests.csproj --no-restore --configuration Release -f net9.0
+
+    - name: Test
+      run: dotnet test EnsureValidation.PtBr.Tests/EnsureValidation.PtBr.Tests.csproj --no-build --configuration Release --verbosity normal -f net9.0
+
+    - name: Pack
+      run: dotnet pack EnsureValidation.PtBr/EnsureValidation.PtBR.csproj --configuration Release --no-build -p:PackageVersion=${{ github.event.release.tag_name || github.event.inputs.version }}
+
+    - name: Push to NuGet
+      run: dotnet nuget push "**/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

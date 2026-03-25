@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../EnsureValidation.PtBr.Tests/EnsureValidation.PtBr.Tests.csproj" />
+  <Project Path="EnsureValidation.PtBR.csproj" />
+</Solution>

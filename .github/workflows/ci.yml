@@ -31,8 +31,8 @@ jobs:
 
     - name: Restore dependencies
       run: |
-        dotnet restore EnsureValidation.PtBr/EnsureValidation.PtBR.csproj -f ${{ matrix.tfm }}
-        dotnet restore EnsureValidation.PtBr.Tests/EnsureValidation.PtBr.Tests.csproj -f ${{ matrix.tfm }}
+        dotnet restore EnsureValidation.PtBr/EnsureValidation.PtBR.csproj
+        dotnet restore EnsureValidation.PtBr.Tests/EnsureValidation.PtBr.Tests.csproj
 
     - name: Build
       run: |
